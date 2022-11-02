@@ -1,6 +1,6 @@
 
 inventory = {0,0,0,64,0,0}
-selected_item = 2
+selected_item = 0
 
 function gs.init(self)
 	pal({1, -13, 3, -5, 11, -6}, 1)
@@ -10,8 +10,13 @@ end
 function gs.update_inventory(self)
 	if mouse_click() == 1 then
 		local pos = mouse_pos()
-		if mid(109, pos[2], 125) == pos[2] then
-			selected_item = pos[1] \ 18
+		if mid(109, pos[2], 125) == pos[2] and mid(18, pos[1], 125) == pos[1] then
+			local i = pos[1] \ 18
+			if inventory[i] > 0 then
+				selected_item = i
+			else
+				selected_item = 0
+			end
 		end
 	end
 end
@@ -50,11 +55,16 @@ function gs.draw_inventory(self)
 end
 
 
+function gs.draw_pallete(self)
+	for i=0,6 do
+		rect(i*2, 0, i*2+1, 2, i)
+	end
+end
+
+
 function gs.draw(self)
 	cls()
 	self:draw_inventory()
 	self:draw_cursor()
-	for i=0,6 do
-		rect(i*2, 0, i*2+1, 2, i)
-	end
+	--self:draw_pallete()
 end
